@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wie viel Reis, Nudeln, Kartoffeln pro Person? Mengen-Rechner mit Mitbringliste</title>
+<meta name="description" content="Wie viel Reis pro Person? 70 g roh als Beilage, 100 g als Hauptgericht. Mengen für Reis, Nudeln, Kartoffeln, Couscous und Bulgur mit Wasser und Garzeit, Mengen für Buffet, Grillabend und Kaffeetafel – und eine Mitbringliste zum Teilen. Kostenlos, ohne Anmeldung.">
+<link rel="canonical" href="https://schrauberbits.github.io/pro-person/">
+<style>
+/*STIL*/
+</style>
+<script data-goatcounter="https://schrauberbits.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <a class="brand" href="./">🍚 Mengen pro Person</a>
+  </div>
+
+  <h1>Wie viel pro Person?</h1>
+  <p class="sub">Richtwerte für rohe Mengen je Erwachsenem. Kinder bis etwa 10 Jahre: die Hälfte.</p>
+  <table class="schnell" aria-label="Mengen pro Person auf einen Blick">
+    <thead><tr><th></th><th>Beilage</th><th>Hauptgericht</th><th>Wasser</th></tr></thead>
+    <tbody>
+/*SCHNELLTABELLE*/
+    </tbody>
+  </table>
+  <p class="hint">Mehr Personen, Kinder, großer Hunger? Unten einstellen – das Ergebnis lässt sich als Einkaufs- und Mitbringliste an die Gruppe schicken.</p>
+
+  <nav class="tabs" id="tabs" aria-label="Bereiche">
+    <button data-tab="beilage" class="on">🍚 Beilage</button>
+    <button data-tab="feier">🎉 Feier</button>
+    <button data-tab="liste">📝 Liste</button>
+  </nav>
+
+  <section id="beilage" class="panel">
+    <h2>Wie viel brauche ich?</h2>
+    <label class="lbl" for="sorte">Was gibt es?</label>
+    <select id="sorte"></select>
+    <div class="lbl">Als</div>
+    <div class="pills" id="art">
+      <button class="pill on" data-v="beilage">Beilage</button>
+      <button class="pill" data-v="haupt">Hauptgericht</button>
+    </div>
+    <div class="row2">
+      <div><label class="lbl" for="p">Erwachsene</label><div class="num"><button data-d="-1" data-f="p">−</button><input id="p" type="number" inputmode="numeric" min="0" max="500" value="4"><button data-d="1" data-f="p">+</button></div></div>
+      <div><label class="lbl" for="k">Kinder (bis ~10)</label><div class="num"><button data-d="-1" data-f="k">−</button><input id="k" type="number" inputmode="numeric" min="0" max="500" value="0"><button data-d="1" data-f="k">+</button></div></div>
+    </div>
+    <div class="lbl">Hunger</div>
+    <div class="pills" id="hunger">
+      <button class="pill" data-v="wenig">wenig</button>
+      <button class="pill on" data-v="normal">normal</button>
+      <button class="pill" data-v="viel">groß</button>
+    </div>
+    <div class="answer" id="beilageErgebnis" aria-live="polite"></div>
+    <div class="actions">
+      <button class="btn" id="beilageZurListe">+ In die Einkaufsliste</button>
+      <button class="btn ghost" id="beilageTeilen">Ergebnis teilen</button>
+    </div>
+    <p class="msg" id="beilageMsg"></p>
+  </section>
+
+  <section id="feier" class="panel hide">
+    <h2>Feier: Mengen für alle</h2>
+    <div class="lbl">Anlass</div>
+    <div class="grid" id="anlass">
+      <button class="card on" data-v="buffet"><span class="e">🥗</span>Buffet</button>
+      <button class="card" data-v="grill"><span class="e">🔥</span>Grillabend</button>
+      <button class="card" data-v="kaffee"><span class="e">🎂</span>Kaffee &amp; Kuchen</button>
+      <button class="card" data-v="fingerfood"><span class="e">🍢</span>Fingerfood</button>
+    </div>
+    <div class="row2">
+      <div><label class="lbl" for="g">Erwachsene</label><div class="num"><button data-d="-1" data-f="g">−</button><input id="g" type="number" inputmode="numeric" min="0" max="1000" value="20"><button data-d="1" data-f="g">+</button></div></div>
+      <div><label class="lbl" for="gk">Kinder (bis ~10)</label><div class="num"><button data-d="-1" data-f="gk">−</button><input id="gk" type="number" inputmode="numeric" min="0" max="1000" value="0"><button data-d="1" data-f="gk">+</button></div></div>
+    </div>
+    <label class="lbl" for="h">Dauer in Stunden</label>
+    <div class="num"><button data-d="-1" data-f="h">−</button><input id="h" type="number" inputmode="numeric" min="1" max="24" value="4"><button data-d="1" data-f="h">+</button></div>
+    <div class="answer" id="feierErgebnis" aria-live="polite"></div>
+    <div class="actions">
+      <button class="btn" id="feierZurListe">+ Alles in die Liste</button>
+      <button class="btn ghost" id="feierTeilen">Ergebnis teilen</button>
+    </div>
+    <p class="msg" id="feierMsg"></p>
+  </section>
+
+  <section id="liste" class="panel hide">
+    <div class="banner hide" id="geteiltHinweis">Diese Liste hat dir jemand geschickt. Trag bei dem, was du mitbringst, deinen Namen ein und schick den Link danach zurück in die Gruppe – die Liste steckt nur im Link, nirgends sonst.</div>
+    <label class="lbl" for="titel">Name der Liste</label>
+    <input id="titel" type="text" maxlength="80" placeholder="z. B. Geburtstag Samstag">
+    <ul class="items" id="items"></ul>
+    <form class="add" id="addForm">
+      <input id="neuName" type="text" maxlength="60" placeholder="Was? z. B. Nudelsalat" aria-label="Was">
+      <input id="neuMenge" type="text" maxlength="40" placeholder="Menge" aria-label="Menge">
+      <button class="btn" type="submit">+</button>
+    </form>
+    <p class="hint" id="listeLeer">Noch leer. Im Bereich Beilage oder Feier auf „In die Liste“ tippen oder hier selbst etwas eintragen.</p>
+    <div class="actions">
+      <button class="btn" id="listeTeilen">Link an die Gruppe schicken</button>
+      <a class="btn ghost" id="listeWhatsapp" href="#" target="_blank" rel="noopener">Per WhatsApp</a>
+      <button class="btn ghost" id="listeDrucken">Drucken</button>
+    </div>
+    <p class="msg" id="listeMsg"></p>
+  </section>
+
+  <section class="mehr">
+    <h2>Häufige Fragen</h2>
+    <ul class="links">
+/*SEITENLINKS*/
+    </ul>
+  </section>
+
+  <footer>Richtwerte ohne Gewähr – jeder isst anders. Quellen: Portionsplaner des Ministeriums für Ernährung, Ländlichen Raum und Verbraucherschutz Baden-Württemberg (2026), Verbraucherzentrale (Festessen planen, 2025), Hersteller- und Ratgeberangaben zu Wasser und Garzeit; Packungsangabe geht vor. Keine Ernährungsberatung.<br>Kostenlos, ohne Anmeldung, ohne Werbung, ohne Speicherung auf einem Server – ein Hobbyprojekt, mit KI-Hilfe erstellt. Aufrufe werden anonym und ohne Cookies gezählt (GoatCounter).<br>Mehr Helfer: <a href="https://schrauberbits.github.io/feiertags-helfer/">Feiertags-Helfer</a> · <a href="https://schrauberbits.github.io/heiz-helfer/">Heiz-Helfer</a></footer>
+</div>
+
+<script>
+/*DATEN*/
+/*SKRIPT*/
+</script>
+</body>
+</html>

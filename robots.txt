@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://schrauberbits.github.io/pro-person/sitemap.xml

@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wie viel Reis, Nudeln, Kartoffeln pro Person? Mengen-Rechner mit Mitbringliste</title>
+<meta name="description" content="Wie viel Reis pro Person? 70 g roh als Beilage, 100 g als Hauptgericht. Mengen für Reis, Nudeln, Kartoffeln, Couscous und Bulgur mit Wasser und Garzeit, Mengen für Buffet, Grillabend und Kaffeetafel – und eine Mitbringliste zum Teilen. Kostenlos, ohne Anmeldung.">
+<link rel="canonical" href="https://schrauberbits.github.io/pro-person/">
+<style>
+:root{--bg:#f7f5ef;--card:#fff;--ink:#1d1c18;--muted:#625e55;--line:#e3ded2;--soft:#f0ece2;
+--accent:#3f7d3a;--accent-ink:#fff;--accent-soft:#e3f0df;--warn-soft:#fbefd9}
+@media (prefers-color-scheme:dark){:root{--bg:#131411;--card:#1d1f1a;--ink:#eeece6;--muted:#a7a397;--line:#363830;--soft:#262820;
+--accent:#8fcf86;--accent-ink:#0f230c;--accent-soft:#22331f;--warn-soft:#382c17}}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+.wrap{max-width:580px;margin:0 auto;padding:18px 16px 60px}
+.top{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.brand{font-weight:700;color:var(--ink);text-decoration:none}
+h1{font-size:1.6rem;line-height:1.2;margin:0 0 6px}
+h2{font-size:1.3rem;line-height:1.25;margin:0 0 12px}
+.sub,.hint{color:var(--muted);margin:0 0 14px}
+.hint{font-size:.92rem}
+table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;margin:0 0 12px;font-size:.95rem}
+th,td{padding:8px 10px;text-align:left;border-bottom:1px solid var(--line)}
+th{background:var(--soft);font-weight:600}
+tr:last-child td{border-bottom:0}
+td.r,th.r{text-align:right;white-space:nowrap}
+.tabs{display:flex;gap:6px;margin:18px 0 12px;position:sticky;top:0;background:var(--bg);padding:6px 0;z-index:2}
+.tabs button{flex:1;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:12px;padding:10px 6px;font:inherit;font-size:.95rem;cursor:pointer;min-height:46px}
+.tabs button.on{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:600}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px}
+.lbl{display:block;font-size:.88rem;color:var(--muted);margin:12px 0 4px}
+select,input[type=text],input[type=number]{width:100%;font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:10px 12px;min-height:46px}
+.pills{display:flex;flex-wrap:wrap;gap:8px}
+.pill{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:9px 16px;font:inherit;font-size:.95rem;cursor:pointer;min-height:44px}
+.pill.on{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:600}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+@media (max-width:420px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.card{display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 4px;background:var(--card);border:1px solid var(--line);border-radius:14px;font:inherit;font-size:.88rem;color:inherit;cursor:pointer;min-height:78px;justify-content:center;text-align:center;line-height:1.2}
+.card .e{font-size:1.6rem}
+.card.on{border:2px solid var(--accent);background:var(--accent-soft)}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.num{display:flex;gap:6px}
+.num button{flex:0 0 46px;border:1px solid var(--line);background:var(--soft);color:var(--ink);border-radius:12px;font-size:1.3rem;cursor:pointer}
+.num input{text-align:center}
+.answer{margin:16px 0 4px;padding:14px;border-radius:14px;background:var(--accent-soft)}
+.answer .gross{font-size:1.5rem;font-weight:700;line-height:1.2;margin:0 0 6px}
+.answer ul{margin:8px 0 0;padding-left:20px}
+.answer table{margin:8px 0 0}
+.answer .klein{font-size:.85rem;color:var(--muted);margin-top:8px}
+.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.btn{display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--accent);background:var(--accent);color:var(--accent-ink);border-radius:12px;padding:10px 14px;font:inherit;font-size:.95rem;font-weight:600;cursor:pointer;min-height:46px;text-decoration:none}
+.btn.ghost{background:transparent;color:var(--accent)}
+.banner{background:var(--warn-soft);border-radius:12px;padding:10px 12px;margin-bottom:10px;font-size:.92rem}
+.items{list-style:none;margin:12px 0 0;padding:0}
+.items li{display:grid;grid-template-columns:34px 1fr auto;gap:8px;align-items:center;padding:8px 0;border-bottom:1px solid var(--line)}
+.items li.done .was{text-decoration:line-through;color:var(--muted)}
+.items input[type=checkbox]{width:26px;height:26px;accent-color:var(--accent)}
+.items .was{font-weight:600}
+.items .menge{color:var(--muted);font-size:.9rem}
+.items .wer{grid-column:2/4;min-height:40px;padding:6px 10px;font-size:.92rem}
+.items .weg{border:0;background:none;color:var(--muted);font-size:1.2rem;cursor:pointer;padding:4px 8px}
+.add{display:grid;grid-template-columns:1fr 110px 50px;gap:6px;margin-top:12px}
+.msg{min-height:1.4em;color:var(--accent);font-size:.92rem}
+.mehr{margin-top:26px}
+.links{padding-left:20px;margin:0}
+.links li{margin:4px 0}
+a{color:var(--accent)}
+.hide{display:none!important}
+footer{margin-top:28px;font-size:.8rem;color:var(--muted);text-align:center;line-height:1.5}
+@media print{.tabs,.actions,.add,.mehr,.schnell,.sub,.hint,h1,.top,#beilage,#feier,.weg,.banner{display:none!important}#liste{display:block!important;border:0}body{background:#fff;color:#000}.items .wer{border:0}}
+
+</style>
+<script data-goatcounter="https://schrauberbits.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <a class="brand" href="./">🍚 Mengen pro Person</a>
+  </div>
+
+  <h1>Wie viel pro Person?</h1>
+  <p class="sub">Richtwerte für rohe Mengen je Erwachsenem. Kinder bis etwa 10 Jahre: die Hälfte.</p>
+  <table class="schnell" aria-label="Mengen pro Person auf einen Blick">
+    <thead><tr><th></th><th>Beilage</th><th>Hauptgericht</th><th>Wasser</th></tr></thead>
+    <tbody>
+      <tr><td><b>Reis</b></td><td>70 g</td><td>100 g</td><td>1 : 1,5 (Tasse)</td></tr>
+      <tr><td><b>Nudeln</b></td><td>70 g</td><td>110 g</td><td>1 l je 100 g</td></tr>
+      <tr><td><b>Kartoffeln</b></td><td>190 g</td><td>275 g</td><td>bedecken</td></tr>
+      <tr><td><b>Couscous</b></td><td>60 g</td><td>90 g</td><td>1 : 1</td></tr>
+      <tr><td><b>Bulgur</b></td><td>50 g</td><td>80 g</td><td>1 : 1</td></tr>
+    </tbody>
+  </table>
+  <p class="hint">Mehr Personen, Kinder, großer Hunger? Unten einstellen – das Ergebnis lässt sich als Einkaufs- und Mitbringliste an die Gruppe schicken.</p>
+
+  <nav class="tabs" id="tabs" aria-label="Bereiche">
+    <button data-tab="beilage" class="on">🍚 Beilage</button>
+    <button data-tab="feier">🎉 Feier</button>
+    <button data-tab="liste">📝 Liste</button>
+  </nav>
+
+  <section id="beilage" class="panel">
+    <h2>Wie viel brauche ich?</h2>
+    <label class="lbl" for="sorte">Was gibt es?</label>
+    <select id="sorte"></select>
+    <div class="lbl">Als</div>
+    <div class="pills" id="art">
+      <button class="pill on" data-v="beilage">Beilage</button>
+      <button class="pill" data-v="haupt">Hauptgericht</button>
+    </div>
+    <div class="row2">
+      <div><label class="lbl" for="p">Erwachsene</label><div class="num"><button data-d="-1" data-f="p">−</button><input id="p" type="number" inputmode="numeric" min="0" max="500" value="4"><button data-d="1" data-f="p">+</button></div></div>
+      <div><label class="lbl" for="k">Kinder (bis ~10)</label><div class="num"><button data-d="-1" data-f="k">−</button><input id="k" type="number" inputmode="numeric" min="0" max="500" value="0"><button data-d="1" data-f="k">+</button></div></div>
+    </div>
+    <div class="lbl">Hunger</div>
+    <div class="pills" id="hunger">
+      <button class="pill" data-v="wenig">wenig</button>
+      <button class="pill on" data-v="normal">normal</button>
+      <button class="pill" data-v="viel">groß</button>
+    </div>
+    <div class="answer" id="beilageErgebnis" aria-live="polite"></div>
+    <div class="actions">
+      <button class="btn" id="beilageZurListe">+ In die Einkaufsliste</button>
+      <button class="btn ghost" id="beilageTeilen">Ergebnis teilen</button>
+    </div>
+    <p class="msg" id="beilageMsg"></p>
+  </section>
+
+  <section id="feier" class="panel hide">
+    <h2>Feier: Mengen für alle</h2>
+    <div class="lbl">Anlass</div>
+    <div class="grid" id="anlass">
+      <button class="card on" data-v="buffet"><span class="e">🥗</span>Buffet</button>
+      <button class="card" data-v="grill"><span class="e">🔥</span>Grillabend</button>
+      <button class="card" data-v="kaffee"><span class="e">🎂</span>Kaffee &amp; Kuchen</button>
+      <button class="card" data-v="fingerfood"><span class="e">🍢</span>Fingerfood</button>
+    </div>
+    <div class="row2">
+      <div><label class="lbl" for="g">Erwachsene</label><div class="num"><button data-d="-1" data-f="g">−</button><input id="g" type="number" inputmode="numeric" min="0" max="1000" value="20"><button data-d="1" data-f="g">+</button></div></div>
+      <div><label class="lbl" for="gk">Kinder (bis ~10)</label><div class="num"><button data-d="-1" data-f="gk">−</button><input id="gk" type="number" inputmode="numeric" min="0" max="1000" value="0"><button data-d="1" data-f="gk">+</button></div></div>
+    </div>
+    <label class="lbl" for="h">Dauer in Stunden</label>
+    <div class="num"><button data-d="-1" data-f="h">−</button><input id="h" type="number" inputmode="numeric" min="1" max="24" value="4"><button data-d="1" data-f="h">+</button></div>
+    <div class="answer" id="feierErgebnis" aria-live="polite"></div>
+    <div class="actions">
+      <button class="btn" id="feierZurListe">+ Alles in die Liste</button>
+      <button class="btn ghost" id="feierTeilen">Ergebnis teilen</button>
+    </div>
+    <p class="msg" id="feierMsg"></p>
+  </section>
+
+  <section id="liste" class="panel hide">
+    <div class="banner hide" id="geteiltHinweis">Diese Liste hat dir jemand geschickt. Trag bei dem, was du mitbringst, deinen Namen ein und schick den Link danach zurück in die Gruppe – die Liste steckt nur im Link, nirgends sonst.</div>
+    <label class="lbl" for="titel">Name der Liste</label>
+    <input id="titel" type="text" maxlength="80" placeholder="z. B. Geburtstag Samstag">
+    <ul class="items" id="items"></ul>
+    <form class="add" id="addForm">
+      <input id="neuName" type="text" maxlength="60" placeholder="Was? z. B. Nudelsalat" aria-label="Was">
+      <input id="neuMenge" type="text" maxlength="40" placeholder="Menge" aria-label="Menge">
+      <button class="btn" type="submit">+</button>
+    </form>
+    <p class="hint" id="listeLeer">Noch leer. Im Bereich Beilage oder Feier auf „In die Liste“ tippen oder hier selbst etwas eintragen.</p>
+    <div class="actions">
+      <button class="btn" id="listeTeilen">Link an die Gruppe schicken</button>
+      <a class="btn ghost" id="listeWhatsapp" href="#" target="_blank" rel="noopener">Per WhatsApp</a>
+      <button class="btn ghost" id="listeDrucken">Drucken</button>
+    </div>
+    <p class="msg" id="listeMsg"></p>
+  </section>
+
+  <section class="mehr">
+    <h2>Häufige Fragen</h2>
+    <ul class="links">
+      <li><a href="reis-pro-person/">Wie viel Reis pro Person?</a></li>
+      <li><a href="reis-wasser-verhaeltnis/">Wie viel Wasser für Reis? Das Verhältnis Reis zu Wasser</a></li>
+      <li><a href="couscous-pro-person/">Wie viel Couscous pro Person?</a></li>
+      <li><a href="kartoffeln-pro-person/">Wie viele Kartoffeln pro Person?</a></li>
+      <li><a href="nudeln-pro-person/">Wie viel Nudeln pro Person?</a></li>
+      <li><a href="bulgur-pro-person/">Wie viel Bulgur pro Person?</a></li>
+      <li><a href="buffet-pro-person/">Wie viel Essen pro Person beim Buffet?</a></li>
+      <li><a href="kuchen-pro-person/">Wie viel Kuchen pro Person zum Geburtstag?</a></li>
+      <li><a href="party-fuer-20-personen/">Party für 20 Personen: Wie viel Essen und Trinken?</a></li>
+    </ul>
+  </section>
+
+  <footer>Richtwerte ohne Gewähr – jeder isst anders. Quellen: Portionsplaner des Ministeriums für Ernährung, Ländlichen Raum und Verbraucherschutz Baden-Württemberg (2026), Verbraucherzentrale (Festessen planen, 2025), Hersteller- und Ratgeberangaben zu Wasser und Garzeit; Packungsangabe geht vor. Keine Ernährungsberatung.<br>Kostenlos, ohne Anmeldung, ohne Werbung, ohne Speicherung auf einem Server – ein Hobbyprojekt, mit KI-Hilfe erstellt. Aufrufe werden anonym und ohne Cookies gezählt (GoatCounter).<br>Mehr Helfer: <a href="https://schrauberbits.github.io/feiertags-helfer/">Feiertags-Helfer</a> · <a href="https://schrauberbits.github.io/heiz-helfer/">Heiz-Helfer</a></footer>
+</div>
+
+<script>
+const D={"sorten": {"basmati": {"name": "Basmati- oder Jasminreis", "kurz": "Reis", "roh": true, "b": 70, "h": 100, "wasserJeG": 1.9, "wasserRegel": "1 Tasse Reis auf 1,5 Tassen Wasser (Quellmethode)", "zeit": "10–12 Min. mit Deckel bei kleiner Hitze köcheln, dann kurz ziehen lassen", "packung": 500, "packungText": "übliche Packung", "quelle": "Portionsplaner MLR Baden-Württemberg 2026 (Reis 60–80 g Beilage, 80–100 g Hauptgericht); Wasser 1:1,5 nach Utopia; Garzeit nach REWE-Warenkunde"}, "langkorn": {"name": "Langkornreis oder Parboiled-Reis", "kurz": "Reis", "roh": true, "b": 70, "h": 100, "wasserJeG": 2.5, "wasserRegel": "1 Tasse Reis auf 2 Tassen Wasser (Quellmethode)", "zeit": "laut Packung, meist 15–20 Min. mit Deckel quellen lassen", "packung": 500, "packungText": "übliche Packung", "quelle": "Portionsplaner MLR Baden-Württemberg 2026; Wasser 1:2 nach dm"}, "naturreis": {"name": "Naturreis (Vollkornreis)", "kurz": "Naturreis", "roh": true, "b": 70, "h": 100, "wasserJeG": 2.5, "wasserRegel": "1 Tasse Reis auf 2 Tassen Wasser, lieber etwas mehr", "zeit": "laut Packung, meist 30–40 Min.", "packung": 500, "packungText": "übliche Packung", "quelle": "Portionsplaner MLR Baden-Württemberg 2026; Wasser 1:2 nach Utopia"}, "nudeln": {"name": "Nudeln (trocken)", "kurz": "Nudeln", "roh": true, "b": 70, "h": 110, "wasserJeG": 10, "wasserRegel": "1 Liter Wasser je 100 g Nudeln, danach abgießen", "zeit": "laut Packung, meist 8–12 Min.", "packung": 500, "packungText": "übliche Packung", "quelle": "Portionsplaner MLR Baden-Württemberg 2026 (Nudeln 60–80 g Beilage, 100–120 g Hauptgericht)"}, "kartoffeln": {"name": "Kartoffeln", "kurz": "Kartoffeln", "roh": false, "b": 190, "h": 275, "wasserJeG": 0, "wasserRegel": "knapp mit Wasser bedecken", "zeit": "je nach Größe etwa 20–25 Min. (Gabelprobe)", "packung": 2500, "packungText": "übliches Netz", "quelle": "Portionsplaner MLR Baden-Württemberg 2026 (Kartoffeln roh, ungeschält: 175–200 g Beilage, 250–300 g Hauptgericht)"}, "couscous": {"name": "Couscous", "kurz": "Couscous", "roh": true, "b": 60, "h": 90, "wasserJeG": 1, "wasserRegel": "gleiche Menge kochendes Wasser oder Brühe (1:1), je nach Packung bis 1:1,5", "zeit": "5–10 Min. zugedeckt quellen lassen, mit der Gabel auflockern", "packung": 500, "packungText": "übliche Packung", "quelle": "REWE (60 g pro Person, 1:1, etwa 10 Min.), Familienkost (1:1); Hauptgericht 90 g als 1,5-fache Beilage (eigener Richtwert, wie bei Bulgur 50/80 g)"}, "bulgur_fein": {"name": "Bulgur fein oder Schnellbulgur", "kurz": "Bulgur", "roh": true, "b": 50, "h": 80, "wasserJeG": 1, "wasserRegel": "1:1 mit heißem Wasser übergießen", "zeit": "einige Minuten zugedeckt quellen lassen", "packung": 500, "packungText": "übliche Packung", "quelle": "Utopia (50 g Beilage, 80 g Hauptgericht, Schnellbulgur 1:1)"}, "bulgur_grob": {"name": "Bulgur grob", "kurz": "Bulgur", "roh": true, "b": 50, "h": 80, "wasserJeG": 2, "wasserRegel": "1:2 mit kochendem Wasser übergießen (200 g auf 400 ml)", "zeit": "15 Min. abgedeckt quellen lassen", "packung": 500, "packungText": "übliche Packung", "quelle": "Utopia (50 g Beilage, 80 g Hauptgericht, grob 1:2, 15 Min.)"}}, "feier": {"buffet": {"name": "Buffet", "posten": [{"name": "Fleisch und Fisch", "jeP": 125, "einheit": "g", "hinweis": "75 g Fleisch + 50 g Fisch je Person"}, {"name": "Salate (Nudel-, Kartoffel-, Blattsalat)", "jeP": 250, "einheit": "g", "hinweis": "alle Salate zusammen"}, {"name": "Brot oder Brötchen", "jeP": 2, "einheit": "stueck", "stueckEins": "Scheibe/Brötchen", "stueckViele": "Scheiben/Brötchen", "hinweis": "2 je Person"}, {"name": "Nachtisch", "jeP": 125, "einheit": "g", "hinweis": "100–150 g je Person"}, {"name": "Getränke", "typ": "getraenk", "einheit": "l", "hinweis": "0,5 l je Erwachsenem und Stunde, Kinder 0,4 l; mindestens die Hälfte Wasser und Alkoholfreies"}], "notiz": "Die Verbraucherzentrale rechnet beim Büfett mit insgesamt etwa 800 g Essen je Person; je größer die Auswahl, desto kleiner die einzelnen Mengen.", "quelle": "Verbraucherzentrale (Stand 12/2025), Portionsplaner MLR Baden-Württemberg 2026, DRK-Verpflegungsdienst, Getränke-Faustregel"}, "grill": {"name": "Grillabend", "posten": [{"name": "Grillgut (Fleisch, Würstchen)", "jeP": 325, "einheit": "g", "hinweis": "300–350 g je Person; mit Grillkäse oder -gemüse weniger"}, {"name": "Salate", "jeP": 250, "einheit": "g", "hinweis": "alle Salate zusammen"}, {"name": "Brot oder Baguette", "jeP": 4, "einheit": "stueck", "stueckEins": "Scheibe", "stueckViele": "Scheiben", "hinweis": "4–5 Scheiben je Person"}, {"name": "Gemüse und Rohkost", "jeP": 100, "einheit": "g", "hinweis": "etwa 100 g je Person"}, {"name": "Getränke", "typ": "getraenk", "einheit": "l", "hinweis": "0,5 l je Erwachsenem und Stunde, Kinder 0,4 l; mindestens die Hälfte Wasser und Alkoholfreies"}], "notiz": "Gibt es keine Salate, doppelt so viel Brot rechnen.", "quelle": "Berliner Kurier (Grillgut 300–350 g), Für Sie (Salate 250 g, Brot 4–5 Scheiben, Gemüse 100 g), Getränke-Faustregel"}, "kaffee": {"name": "Kaffee und Kuchen", "posten": [{"name": "Kuchen", "jeP": 2, "einheit": "stueck", "stueckEins": "Stück", "stueckViele": "Stück", "kuchen": true, "hinweis": "2 Stück je Gast"}, {"name": "Kaffee oder Tee", "jeP": 0.3, "kinderJeP": 0, "einheit": "l", "hinweis": "etwa 2 Tassen je Erwachsenem"}, {"name": "Wasser, Saft, Limo", "typ": "getraenkOhneKaffee", "einheit": "l", "hinweis": "Getränke insgesamt 0,5 l je Erwachsenem und Stunde (Kinder 0,4 l), abzüglich Kaffee"}], "notiz": "Bei einem großen Kuchenbuffet mit vielen Sorten reicht oft 1 Stück je Gast; gibt es nur Kuchen, eher 2–3.", "quelle": "lecker.de (2 Stück je Gast), Küchenfibel (Springform 12, Blech 20 Stück), DRK-Verpflegungsdienst (Kaffee/Tee 2–3 dl), Getränke-Faustregel"}, "fingerfood": {"name": "Fingerfood", "posten": [{"name": "Häppchen", "jeP": 13, "einheit": "stueck", "stueckEins": "Häppchen", "stueckViele": "Häppchen", "hinweis": "12–15 je Person, wenn es sonst nichts gibt"}, {"name": "Getränke", "typ": "getraenk", "einheit": "l", "hinweis": "0,5 l je Erwachsenem und Stunde, Kinder 0,4 l; mindestens die Hälfte Wasser und Alkoholfreies"}], "notiz": "Als Vorspeise vor einem Essen reichen 8–10 Häppchen je Person.", "quelle": "Verbraucherzentrale (12–15 Häppchen), DRK-Verpflegungsdienst (Apéro 8–10), Getränke-Faustregel"}}, "kinderFaktor": 0.5, "hunger": {"wenig": 0.8, "normal": 1, "viel": 1.25}, "getraenk": {"erwachsene": 0.5, "kinder": 0.4}, "kuchen": {"blech": 20, "rund": 12}};
+// ================= Grundlagen =================
+const $=id=>document.getElementById(id);
+const fmt=(n,d=0)=>Number(n).toLocaleString('de-DE',{minimumFractionDigits:d,maximumFractionDigits:d});
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const zahl=(v,min,max)=>{let n=parseInt(String(v).replace(/[^0-9-]/g,''),10);if(!isFinite(n))n=min;return Math.min(max,Math.max(min,n));};
+// Gramm sinnvoll runden und anzeigen
+function gramm(g){if(g<=0)return '0 g';if(g<1000)return fmt(Math.round(g/5)*5)+' g';return fmt(Math.round(g/50)*50/1000,g<10000?2:1).replace(/,?0+$/,'')+' kg';}
+function ml(m){if(m<1000)return fmt(Math.round(m/10)*10)+' ml';return fmt(Math.round(m/100)*100/1000,1).replace(/,0$/,'')+' l';}
+
+// ================= Kennung (ref) und Zählung =================
+const params=new URLSearchParams(location.search);
+const REF=(params.get('ref')||'direkt').toLowerCase().replace(/[^a-z0-9-]/g,'').slice(0,40)||'direkt';
+const REF_W=REF.endsWith('-w')?REF:REF+'-w';
+const gezaehlt={};
+function senden(path,title,versuch){
+  try{if(window.goatcounter&&window.goatcounter.count){window.goatcounter.count({path,title,event:true});return;}}catch(e){return;}
+  if(versuch<40)setTimeout(()=>senden(path,title,versuch+1),250);
+}
+function zaehle(art){const key='person-'+art+'--'+REF;if(gezaehlt[key])return;gezaehlt[key]=1;senden(key,'Mengen pro Person: '+art+' ('+REF+')',0);}
+// Nutzung = der Besucher stellt selbst etwas ein (nicht: bloßes Öffnen oder Antippen eines Feldes)
+const genutzt=()=>zaehle('nutzung');
+
+// ================= Zustand =================
+const Z={tab:'beilage',sorte:'basmati',art:'beilage',p:4,k:0,hunger:'normal',anlass:'buffet',g:20,gk:0,h:4,titel:'',items:[]};
+// items: [was, menge, wer, erledigt(0/1)]
+
+function hashLesen(){
+  const h=decodeURIComponent(location.hash.slice(1));
+  if(!h)return;
+  const [tab,rest]=h.split('?');
+  if(['beilage','feier','liste'].includes(tab))Z.tab=tab;
+  const q=new URLSearchParams(rest||'');
+  if(q.has('sorte')&&D.sorten[q.get('sorte')])Z.sorte=q.get('sorte');
+  if(q.get('art')==='haupt'||q.get('art')==='beilage')Z.art=q.get('art');
+  if(q.has('p'))Z.p=zahl(q.get('p'),0,500);
+  if(q.has('k'))Z.k=zahl(q.get('k'),0,500);
+  if(D.hunger[q.get('hunger')])Z.hunger=q.get('hunger');
+  if(D.feier[q.get('anlass')])Z.anlass=q.get('anlass');
+  if(q.has('g'))Z.g=zahl(q.get('g'),0,1000);
+  if(q.has('gk'))Z.gk=zahl(q.get('gk'),0,1000);
+  if(q.has('h'))Z.h=zahl(q.get('h'),1,24);
+  if(q.has('l')){const l=listeDekodieren(q.get('l'));if(l){Z.titel=l.t;Z.items=l.i;}}
+  if(q.get('geteilt')==='1')$('geteiltHinweis').classList.remove('hide');
+}
+function hashFuer(tab,mitListe){
+  let q;
+  if(tab==='beilage')q=new URLSearchParams({sorte:Z.sorte,art:Z.art,p:Z.p,k:Z.k,hunger:Z.hunger});
+  else if(tab==='feier')q=new URLSearchParams({anlass:Z.anlass,g:Z.g,gk:Z.gk,h:Z.h});
+  else{q=new URLSearchParams();if(mitListe)q.set('l',listeKodieren());}
+  return '#'+tab+(String(q)?'?'+q:'');
+}
+function hashSchreiben(){try{history.replaceState(null,'',location.pathname+location.search+hashFuer(Z.tab,Z.tab==='liste'));}catch(e){}}
+
+// Liste im Link: JSON → UTF-8 → base64url
+function listeKodieren(){
+  const json=JSON.stringify({t:Z.titel,i:Z.items});
+  const bytes=new TextEncoder().encode(json);let bin='';bytes.forEach(b=>bin+=String.fromCharCode(b));
+  return btoa(bin).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+}
+function listeDekodieren(s){
+  try{const b64=s.replace(/-/g,'+').replace(/_/g,'/');const bin=atob(b64);const bytes=Uint8Array.from(bin,c=>c.charCodeAt(0));
+    const o=JSON.parse(new TextDecoder().decode(bytes));
+    const t=String(o.t||'').slice(0,80);
+    const i=(Array.isArray(o.i)?o.i:[]).filter(x=>Array.isArray(x)).map(x=>[String(x[0]||'').slice(0,60),String(x[1]||'').slice(0,40),String(x[2]||'').slice(0,40),x[3]?1:0]);
+    return {t,i};
+  }catch(e){return null;}
+}
+
+// ================= Beilage =================
+function beilageRechnen(){
+  const s=D.sorten[Z.sorte];
+  const jeP=(Z.art==='haupt'?s.h:s.b)*D.hunger[Z.hunger];
+  const personen=Z.p+Z.k*D.kinderFaktor;
+  const roh=jeP*personen;
+  return {s,jeP,personen,roh,wasser:s.wasserJeG?roh*s.wasserJeG:0};
+}
+function beilageZeigen(){
+  const r=beilageRechnen(),s=r.s;
+  const wer=(Z.p?Z.p+' Erwachsene':'')+(Z.p&&Z.k?' + ':'')+(Z.k?Z.k+' Kinder':'');
+  let html='';
+  if(r.personen<=0){html='<p class="gross">Bitte mindestens eine Person eintragen.</p>';}
+  else{
+    html+=`<p class="gross">${gramm(r.roh)} ${esc(s.kurz)} ${s.roh?'roh':''}</p>`;
+    html+=`<div>für ${esc(wer)} als ${Z.art==='haupt'?'Hauptgericht':'Beilage'} (${fmt(Math.round(r.jeP))} g je Erwachsenem${Z.k?', Kinder die Hälfte':''})</div><ul>`;
+    if(s.wasserJeG)html+=`<li><b>Wasser:</b> etwa ${ml(r.wasser)} – ${esc(s.wasserRegel)}</li>`;
+    else if(s.wasserRegel)html+=`<li><b>Wasser:</b> ${esc(s.wasserRegel)}</li>`;
+    html+=`<li><b>Garzeit:</b> ${esc(s.zeit)}</li>`;
+    if(s.packung){const pk=r.roh/s.packung;html+=`<li><b>Einkauf:</b> ${pk<=1?'1 Packung':fmt(Math.ceil(pk*2)/2,1).replace(/,0$/,'')+' Packungen'} à ${gramm(s.packung)} (${esc(s.packungText)})</li>`;}
+    const hungerText=Z.hunger==='viel'?' Hunger „groß“: +25 %, „wenig“: −20 % (eigene Annahme).':Z.hunger==='wenig'?' Hunger „wenig“: −20 %, „groß“: +25 % (eigene Annahme).':'';
+    const kinderText=Z.k?' Kinder bis etwa 10 Jahre zählen halb (Annahme nach den DGE-Richtwerten für den Energiebedarf).':'';
+    html+=`</ul><p class="klein">Richtwert, Quelle: ${esc(s.quelle)}.${hungerText}${kinderText} Packungsangabe geht vor.</p>`;
+  }
+  $('beilageErgebnis').innerHTML=html;
+}
+
+// ================= Feier =================
+function feierRechnen(){
+  const a=D.feier[Z.anlass];
+  const E=Z.g,K=Z.gk,H=Z.h;
+  const posten=a.posten.map(p=>{
+    let menge;
+    const trinken=(E*D.getraenk.erwachsene+K*D.getraenk.kinder)*H;
+    if(p.typ==='getraenk')menge=trinken;
+    else if(p.typ==='getraenkOhneKaffee'){const kaffee=a.posten.find(x=>x.kinderJeP===0);menge=Math.max(0,trinken-E*(kaffee?kaffee.jeP:0));}
+    else menge=E*p.jeP+K*(p.kinderJeP!==undefined?p.kinderJeP:p.jeP*D.kinderFaktor);
+    return {...p,menge};
+  });
+  return {a,posten};
+}
+function mengeText(p){
+  const m=p.menge;
+  if(p.einheit==='g')return gramm(m);
+  if(p.einheit==='l')return fmt(Math.ceil(m*2)/2,1).replace(/,0$/,'')+' l';
+  if(p.einheit==='stueck'){const n=Math.ceil(m);let t=fmt(n)+' '+(n===1?p.stueckEins:p.stueckViele);
+    if(p.kuchen){t+=` (≈ ${fmt(Math.ceil(n/D.kuchen.blech))} Blechkuchen à ${D.kuchen.blech} Stück oder ${fmt(Math.ceil(n/D.kuchen.rund))} runde Kuchen à ${D.kuchen.rund} Stück)`;}
+    return t;}
+  return fmt(m);
+}
+function feierZeigen(){
+  const r=feierRechnen();
+  if(Z.g+Z.gk<=0){$('feierErgebnis').innerHTML='<p class="gross">Bitte mindestens einen Gast eintragen.</p>';return;}
+  let html=`<p class="gross">${esc(r.a.name)} für ${Z.g+Z.gk} Gäste</p><table><tbody>`;
+  r.posten.forEach(p=>{html+=`<tr><td>${esc(p.name)}<div class="klein">${esc(p.hinweis||'')}</div></td><td class="r"><b>${mengeText(p)}</b></td></tr>`;});
+  html+=`</tbody></table><p class="klein">${esc(r.a.notiz)} Kinder bis etwa 10 Jahre zählen beim Essen halb. Richtwerte, Quellen: ${esc(r.a.quelle)}.</p>`;
+  $('feierErgebnis').innerHTML=html;
+}
+
+// ================= Liste =================
+function listeZeigen(){
+  $('titel').value=Z.titel;
+  const ul=$('items');ul.innerHTML='';
+  Z.items.forEach((it,i)=>{
+    const li=document.createElement('li');if(it[3])li.className='done';
+    li.innerHTML=`<input type="checkbox" ${it[3]?'checked':''} aria-label="erledigt" data-i="${i}"><div><span class="was">${esc(it[0])}</span> <span class="menge">${esc(it[1])}</span></div><button class="weg" data-weg="${i}" aria-label="entfernen">×</button><input class="wer" type="text" maxlength="40" placeholder="Wer bringt es mit?" value="${esc(it[2])}" data-wer="${i}">`;
+    ul.appendChild(li);
+  });
+  $('listeLeer').classList.toggle('hide',Z.items.length>0);
+  $('listeWhatsapp').href='https://wa.me/?text='+encodeURIComponent(teilText('liste'));
+}
+function zurListe(eintraege){
+  eintraege.forEach(e=>{const vorhanden=Z.items.find(x=>x[0]===e[0]);if(vorhanden)vorhanden[1]=e[1];else Z.items.push([e[0],e[1],'',0]);});
+  if(!Z.titel)Z.titel=Z.tab==='feier'?D.feier[Z.anlass].name+' ('+(Z.g+Z.gk)+' Gäste)':'Einkauf';
+  genutzt();listeZeigen();tab('liste');
+  $('listeMsg').textContent='In die Liste übernommen ✓';setTimeout(()=>$('listeMsg').textContent='',2500);
+}
+
+// ================= Teilen =================
+function teilUrl(t){
+  const basis=location.href.split(/[?#]/)[0]+'?ref='+encodeURIComponent(REF_W);
+  if(t==='liste')return basis+'#liste?'+new URLSearchParams({l:listeKodieren(),geteilt:'1'});
+  return basis+hashFuer(t,false);
+}
+function teilText(t){
+  if(t==='liste'){
+    const zeilen=Z.items.map(it=>'• '+it[0]+(it[1]?' – '+it[1]:'')+(it[2]?' ('+it[2]+')':'')).join('\n');
+    return (Z.titel||'Mitbringliste')+'\n'+zeilen+'\n\nWer bringt was? Im Link abhaken und den neuen Link zurückschicken:\n'+teilUrl('liste');
+  }
+  if(t==='beilage'){const r=beilageRechnen();return gramm(r.roh)+' '+r.s.kurz+' für '+(Z.p+Z.k)+' Personen'+(r.s.wasserJeG?', Wasser etwa '+ml(r.wasser):'')+'. Nachrechnen: '+teilUrl('beilage');}
+  return D.feier[Z.anlass].name+' für '+(Z.g+Z.gk)+' Gäste – Mengen: '+teilUrl('feier');
+}
+async function teilen(t,msgEl){
+  genutzt();zaehle('teilen');
+  const text=teilText(t);
+  try{if(navigator.share){await navigator.share({text});return;}}catch(e){if(e&&e.name==='AbortError')return;}
+  try{await navigator.clipboard.writeText(text);msgEl.textContent='Text mit Link kopiert ✓ – jetzt in die Gruppe einfügen.';}
+  catch(e){msgEl.textContent='Bitte den Link oben aus der Adresszeile kopieren.';}
+  setTimeout(()=>msgEl.textContent='',4000);
+}
+
+// ================= Oberfläche =================
+function tab(t){
+  Z.tab=t;
+  document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===t));
+  ['beilage','feier','liste'].forEach(id=>$(id).classList.toggle('hide',id!==t));
+  hashSchreiben();
+}
+function pills(id,key,cb){
+  const el=$(id);
+  el.querySelectorAll('[data-v]').forEach(b=>b.classList.toggle('on',b.dataset.v===Z[key]));
+  el.addEventListener('click',e=>{const b=e.target.closest('[data-v]');if(!b)return;Z[key]=b.dataset.v;el.querySelectorAll('[data-v]').forEach(x=>x.classList.toggle('on',x===b));genutzt();cb();hashSchreiben();});
+}
+function zahlFeld(id,key,min,max,cb){
+  const el=$(id);el.value=Z[key];
+  el.addEventListener('input',()=>{Z[key]=zahl(el.value,min,max);genutzt();cb();hashSchreiben();});
+  el.addEventListener('blur',()=>{el.value=Z[key];});
+}
+document.querySelectorAll('.num button').forEach(b=>b.addEventListener('click',()=>{
+  const el=$(b.dataset.f);const n=zahl(el.value,0,1000)+parseInt(b.dataset.d,10);el.value=Math.max(parseInt(el.min,10)||0,Math.min(parseInt(el.max,10)||1000,n));el.dispatchEvent(new Event('input'));
+}));
+
+function start(){
+  hashLesen();
+  const sel=$('sorte');
+  Object.entries(D.sorten).forEach(([id,s])=>{const o=document.createElement('option');o.value=id;o.textContent=s.name;sel.appendChild(o);});
+  sel.value=Z.sorte;
+  sel.addEventListener('change',()=>{Z.sorte=sel.value;genutzt();beilageZeigen();hashSchreiben();});
+  pills('art','art',beilageZeigen);pills('hunger','hunger',beilageZeigen);pills('anlass','anlass',feierZeigen);
+  zahlFeld('p','p',0,500,beilageZeigen);zahlFeld('k','k',0,500,beilageZeigen);
+  zahlFeld('g','g',0,1000,feierZeigen);zahlFeld('gk','gk',0,1000,feierZeigen);zahlFeld('h','h',1,24,feierZeigen);
+  $('tabs').addEventListener('click',e=>{const b=e.target.closest('[data-tab]');if(b)tab(b.dataset.tab);});
+  $('beilageZurListe').addEventListener('click',()=>{const r=beilageRechnen();zurListe([[r.s.kurz+(Z.art==='haupt'?' (Hauptgericht)':' (Beilage)'),gramm(r.roh)]]);});
+  $('feierZurListe').addEventListener('click',()=>{const r=feierRechnen();zurListe(r.posten.map(p=>[p.name,mengeText(p).replace(/ \(≈.*\)$/,'')]));});
+  $('beilageTeilen').addEventListener('click',()=>teilen('beilage',$('beilageMsg')));
+  $('feierTeilen').addEventListener('click',()=>teilen('feier',$('feierMsg')));
+  $('listeTeilen').addEventListener('click',()=>teilen('liste',$('listeMsg')));
+  $('listeWhatsapp').addEventListener('click',()=>{genutzt();zaehle('teilen');});
+  $('listeDrucken').addEventListener('click',()=>{genutzt();window.print();});
+  $('titel').addEventListener('input',()=>{Z.titel=$('titel').value.slice(0,80);genutzt();hashSchreiben();$('listeWhatsapp').href='https://wa.me/?text='+encodeURIComponent(teilText('liste'));});
+  $('items').addEventListener('change',e=>{const i=e.target.dataset.i;if(i!==undefined){Z.items[i][3]=e.target.checked?1:0;genutzt();listeZeigen();hashSchreiben();}});
+  $('items').addEventListener('input',e=>{const i=e.target.dataset.wer;if(i!==undefined){Z.items[i][2]=e.target.value.slice(0,40);genutzt();hashSchreiben();$('listeWhatsapp').href='https://wa.me/?text='+encodeURIComponent(teilText('liste'));}});
+  $('items').addEventListener('click',e=>{const i=e.target.dataset.weg;if(i!==undefined){Z.items.splice(i,1);genutzt();listeZeigen();hashSchreiben();}});
+  $('addForm').addEventListener('submit',e=>{e.preventDefault();const n=$('neuName').value.trim().slice(0,60);if(!n)return;Z.items.push([n,$('neuMenge').value.trim().slice(0,40),'',0]);$('neuName').value='';$('neuMenge').value='';genutzt();listeZeigen();hashSchreiben();$('neuName').focus();});
+  allesZeigen();
+  if(location.hash&&location.hash.length>1)document.getElementById('tabs').scrollIntoView({block:'start'});
+  // Wird nur der Teil hinter # geändert (z. B. ein zweiter Link im selben Tab), neu einlesen
+  window.addEventListener('hashchange',()=>{hashLesen();allesZeigen();});
+}
+function allesZeigen(){
+  $('sorte').value=Z.sorte;['p','k','g','gk','h'].forEach(id=>{$(id).value=Z[id];});
+  [['art','art'],['hunger','hunger'],['anlass','anlass']].forEach(([id,key])=>$(id).querySelectorAll('[data-v]').forEach(b=>b.classList.toggle('on',b.dataset.v===Z[key])));
+  beilageZeigen();feierZeigen();listeZeigen();tab(Z.tab);
+}
+start();
+
+</script>
+</body>
+</html>
